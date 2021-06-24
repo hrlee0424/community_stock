@@ -28,8 +28,8 @@ class _HomeState extends State<Home> {
              onTap: _onItemTapped,
              items: <BottomNavigationBarItem>[
                BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-               BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Talk'),
-               BottomNavigationBarItem(icon: Icon(Icons.home), label: 'My'),
+               BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Talk'),
+               BottomNavigationBarItem(icon: Icon(Icons.account_circle_rounded), label: 'My'),
              ],
              currentIndex: _selectedIndex,
          ),

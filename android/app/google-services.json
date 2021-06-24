@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1012550997189",
+    "project_id": "community-stock-59851",
+    "storage_bucket": "community-stock-59851.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1012550997189:android:9c9d0a54bf26a371880cac",
+        "android_client_info": {
+          "package_name": "com.dogrim.community_stock"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1012550997189-g3r3ldekddfde2mk4qopnr9ja6l7iq93.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACzBRm1sezx9R48I548XdYG_g7BM2-Sok"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1012550997189-g3r3ldekddfde2mk4qopnr9ja6l7iq93.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
