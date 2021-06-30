@@ -1,9 +1,9 @@
-import 'package:community_stock/homepage.dart';
-import 'package:community_stock/talkpage.dart';
+import 'package:community_stock/page/homepage.dart';
+import 'package:community_stock/page/talkpage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'mypage.dart';
+import 'page/mypage.dart';
 
 class Home extends StatefulWidget {
   const Home({Key key}) : super(key: key);
