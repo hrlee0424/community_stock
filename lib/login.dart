@@ -6,14 +6,16 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class SignUp extends StatefulWidget {
-  const SignUp({Key key}) : super(key: key);
+import 'home.dart';
+
+class Login extends StatefulWidget {
+  const Login({Key key}) : super(key: key);
 
   @override
-  _SignUpState createState() => _SignUpState();
+  _LoginState createState() => _LoginState();
 }
 
-class _SignUpState extends State<SignUp> {
+class _LoginState extends State<Login> {
   TextEditingController _emailController = new TextEditingController();
   FocusNode _emailFocus = new FocusNode();
   TextEditingController _pwController = new TextEditingController();
@@ -21,29 +23,21 @@ class _SignUpState extends State<SignUp> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
-  void dispose() {
-    // TODO: implement dispose
-    _emailController.dispose();
-    _pwController.dispose();
-    _emailFocus.dispose();
-    _pwFocus.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('회원가입'),
-        ),
-        body: new Form(
-            key: formKey,
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 5.0),
-              child: Column(
-                children: [_inputEmail(), _inputPW(), WidgetCustom().showBtn(Text('가입하기'), _signUp)],
-              ),
-            )));
+      body: new Form(
+        key: formKey,
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 5.0),
+          child: Column(
+            children: [
+              _inputEmail(),
+              _inputPW(),
+              WidgetCustom().showBtn(Text('로그인하기'), _login)
+            ],
+          ),
+        ),)
+    );
   }
 
   Widget _inputEmail() {
@@ -73,17 +67,15 @@ class _SignUpState extends State<SignUp> {
         ));
   }
 
-  void _signUp() async {
+  void _login() async{
     if (formKey.currentState.validate()) {
-      FocusScopeNode currentFocus = FocusScope.of(context); currentFocus.unfocus();
       await Firebase.initializeApp();
-      await FireBaseProvider().signUpWithEmail(
-          _emailController.text, _pwController.text).then((value) {
-        if (value) {
-            Navigator.pop(context);
-          } else {
-            _showAlertDialog(context);
-          }
+      await FireBaseProvider().signInWithEmail(_emailController.text, _pwController.text).then((value) {
+        if(!value) _showAlertDialog(context);
+        else {
+          Route route = MaterialPageRoute(builder: (context) => Home());
+          Navigator.pushReplacement(context, route);
+        }
       });
     }
   }
@@ -108,4 +100,5 @@ class _SignUpState extends State<SignUp> {
       },
     );
   }
+
 }

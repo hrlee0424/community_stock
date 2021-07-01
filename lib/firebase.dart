@@ -39,11 +39,13 @@ class FireBaseProvider with ChangeNotifier{
         result.user.sendEmailVerification();
         signOut();
         return true;
+      }else{
+        return false;
       }
     } on Exception catch (e) {
       logger.e(e.toString());
-      List<String> result = e.toString().split(", ");
-      setLastFBMessage(result[1]);
+      // List<String> result = e.toString().split(", ");
+      // setLastFBMessage(result[1]);
       return false;
     }
   }
@@ -56,12 +58,14 @@ class FireBaseProvider with ChangeNotifier{
         setUser(result.user);
         logger.d(getUser());
         return true;
+      }else{
+        return false;
       }
-      return false;
+      // return false;
     } on Exception catch (e) {
       logger.e(e.toString());
-      List<String> result = e.toString().split(", ");
-      setLastFBMessage(result[1]);
+      // List<String> result = e.toString().split(", ");
+      setLastFBMessage(e.toString());
       return false;
     }
   }

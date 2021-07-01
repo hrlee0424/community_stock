@@ -1,3 +1,4 @@
+import 'package:community_stock/login.dart';
 import 'package:flutter/material.dart';
 
 import 'home.dart';
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: new Home(),
+      home: new Login(),
       routes: <String, WidgetBuilder>{
 
       },
