@@ -1,7 +1,7 @@
-import 'package:community_stock/decoration.dart';
+import 'package:community_stock/common/decoration.dart';
 import 'package:community_stock/firebase.dart';
-import 'package:community_stock/validate.dart';
-import 'package:community_stock/widget_style.dart';
+import 'package:community_stock/common/validate.dart';
+import 'package:community_stock/common/widget_style.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
