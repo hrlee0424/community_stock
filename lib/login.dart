@@ -1,3 +1,4 @@
+import 'package:community_stock/common/UserInfo.dart';
 import 'package:community_stock/common/decoration.dart';
 import 'package:community_stock/firebase.dart';
 import 'package:community_stock/common/validate.dart';
@@ -6,6 +7,7 @@ import 'package:community_stock/signup.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'home.dart';
 
@@ -22,6 +24,16 @@ class _LoginState extends State<Login> {
   TextEditingController _pwController = new TextEditingController();
   FocusNode _pwFocus = new FocusNode();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _emailController.dispose();
+    _pwController.dispose();
+    _emailFocus.dispose();
+    _pwFocus.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,6 +95,7 @@ class _LoginState extends State<Login> {
       await FireBaseProvider().signInWithEmail(_emailController.text, _pwController.text).then((value) {
         if(!value) _showAlertDialog(context);
         else {
+          setRememberInfo();
           Route route = MaterialPageRoute(builder: (context) => Home());
           Navigator.pushReplacement(context, route);
         }
@@ -92,6 +105,16 @@ class _LoginState extends State<Login> {
 
   void _signUp() {
     Navigator.push(context, MaterialPageRoute(builder : (context) => SignUp()));
+  }
+
+  void setRememberInfo() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String email = _emailController.text;
+    String pw = _pwController.text;
+    pref.setString("userEmail", email);
+    pref.setString("userPW", pw);
+    UserInfo.userEmail = email;
+    // UserInfo().userPw = pw;
   }
 
   void _showAlertDialog(BuildContext context) async {

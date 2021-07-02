@@ -25,7 +25,7 @@ class FireBaseProvider with ChangeNotifier{
   }
 
   // 최근 Firebase에 로그인한 사용자의 정보 획득
-  _prepareUser(){
+  prepareUser(){
     if(fAuth.currentUser != null){
       setUser(fAuth.currentUser);
     }

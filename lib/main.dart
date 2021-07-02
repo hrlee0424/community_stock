@@ -1,4 +1,5 @@
 import 'package:community_stock/login.dart';
+import 'package:community_stock/splashscreen.dart';
 import 'package:flutter/material.dart';
 
 import 'home.dart';
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: new Login(),
+      home: new SplashScreen(),
       routes: <String, WidgetBuilder>{
 
       },

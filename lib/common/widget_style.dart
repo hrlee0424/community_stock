@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class WidgetCustom{
+class WidgetCustom {
   Widget showBtn(double paddingTop, Text text, getFunction, Color backColor) {
     return Padding(
         padding: EdgeInsets.only(top: paddingTop),
@@ -13,11 +13,9 @@ class WidgetCustom{
               getFunction();
             },
             shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
             color: backColor,
           ),
         ));
   }
-
-
 }
