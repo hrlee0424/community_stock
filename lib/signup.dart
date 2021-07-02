@@ -41,7 +41,7 @@ class _SignUpState extends State<SignUp> {
             child: Padding(
               padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 5.0),
               child: Column(
-                children: [_inputEmail(), _inputPW(), WidgetCustom().showBtn(Text('가입하기'), _signUp)],
+                children: [_inputEmail(), _inputPW(), WidgetCustom().showBtn(50.0, Text('가입하기'), _signUp, Colors.amberAccent)],
               ),
             )));
   }

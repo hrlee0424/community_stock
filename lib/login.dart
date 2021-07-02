@@ -2,6 +2,7 @@ import 'package:community_stock/common/decoration.dart';
 import 'package:community_stock/firebase.dart';
 import 'package:community_stock/common/validate.dart';
 import 'package:community_stock/common/widget_style.dart';
+import 'package:community_stock/signup.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,11 @@ class _LoginState extends State<Login> {
             children: [
               _inputEmail(),
               _inputPW(),
-              WidgetCustom().showBtn(Text('로그인하기'), _login)
+              WidgetCustom().showBtn(50.0, Text('로그인하기'), _login, Colors.amberAccent),
+              Padding(padding: EdgeInsets.only(top: 30), child: Text('ID/PW를 잃어버렸다면?'),),
+              _findIdPw(),
+              Padding(padding: EdgeInsets.only(top: 30), child: Text('아직 회원이 아니라면?'),),
+              WidgetCustom().showBtn(30.0, Text('회원가입', style: TextStyle(color: Colors.white),), _signUp, Colors.blue)
             ],
           ),
         ),)
@@ -67,6 +72,11 @@ class _LoginState extends State<Login> {
         ));
   }
 
+  Widget _findIdPw(){
+    return TextButton(onPressed: (){},
+        child: Text('아이디, 비밀번호 찾기', style: TextStyle(fontWeight: FontWeight.bold),));
+  }
+
   void _login() async{
     if (formKey.currentState.validate()) {
       await Firebase.initializeApp();
@@ -78,6 +88,10 @@ class _LoginState extends State<Login> {
         }
       });
     }
+  }
+
+  void _signUp() {
+    Navigator.push(context, MaterialPageRoute(builder : (context) => SignUp()));
   }
 
   void _showAlertDialog(BuildContext context) async {
