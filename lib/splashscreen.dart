@@ -36,14 +36,20 @@ class _SplashScreenState extends State<SplashScreen> {
     SharedPreferences pref = await SharedPreferences.getInstance();
     userEmail = pref.getString("userEmail");
     userPW = pref.getString("userPW");
-    _login();
+    logger.e('user ' + userEmail.toString());
+    if(userEmail == null || userEmail == '')
+      navigatorPage();
+    else {
+      logger.e('user 11111111111 ' + userEmail.toString());
+      _login();
+    }
   }
 
   void _login() async{
       await Firebase.initializeApp();
       await FireBaseProvider().signInWithEmail(userEmail, userPW).then((value) {
         if(value) {
-            UserInfo.userEmail = userEmail;
+          UserInfo.userEmail = userEmail;
           navigatorPage();
         }
       });
@@ -55,6 +61,8 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void navigatorPage() {
+    logger.e('user 22222222 ' + userEmail.toString());
+
     Route route = MaterialPageRoute(builder: (context) => UserInfo.userEmail == null ? Login(): Home());
     Navigator.pushReplacement(context, route);
   }

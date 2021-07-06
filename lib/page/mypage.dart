@@ -1,6 +1,9 @@
 import 'package:community_stock/common/UserInfo.dart';
+import 'package:community_stock/firebase.dart';
+import 'package:community_stock/login.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyPage extends StatefulWidget {
   const MyPage({Key key}) : super(key: key);
@@ -15,7 +18,8 @@ class _MyPageState extends State<MyPage> {
     return Scaffold(
       body: Column(
         children: [
-          _getUserInfo()
+          _getUserInfo(),
+          _logout()
         ],
       ),
     );
@@ -28,4 +32,19 @@ class _MyPageState extends State<MyPage> {
       ],
     );
   }
+
+  Widget _logout() {
+    return MaterialButton(
+      child: Text('로그아웃'),
+      onPressed: () async {
+        FireBaseProvider().signOut();
+        SharedPreferences preferences = await SharedPreferences.getInstance();
+        await preferences.clear();
+        Route route = MaterialPageRoute(builder: (context) => Login());
+        Navigator.pushReplacement(context, route);
+      },
+    );
+  }
+
+
 }
