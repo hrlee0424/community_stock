@@ -28,8 +28,17 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Text('주식이야기'),
+      body: Column(
+        children: [
+          logo(),
+          Text('주식이야기'),
+        ],
+      )
     );
+  }
+
+  Widget logo() {
+    return Image.asset('assets/images/logo.png');
   }
 
   void getUserInfo() async {

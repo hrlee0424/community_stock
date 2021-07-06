@@ -41,9 +41,10 @@ class _LoginState extends State<Login> {
       body: new Form(
         key: formKey,
         child: Padding(
-          padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 5.0),
-          child: Column(
+          padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 20.0),
+          child: ListView(
             children: [
+              logo(),
               _inputEmail(),
               _inputPW(),
               WidgetCustom().showBtn(50.0, Text('로그인하기'), _login, Colors.amberAccent),
@@ -55,6 +56,10 @@ class _LoginState extends State<Login> {
           ),
         ),)
     );
+  }
+
+  Widget logo() {
+    return Image.asset('assets/images/logo.png');
   }
 
   Widget _inputEmail() {
