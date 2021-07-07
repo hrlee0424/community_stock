@@ -45,11 +45,9 @@ class _SplashScreenState extends State<SplashScreen> {
     SharedPreferences pref = await SharedPreferences.getInstance();
     userEmail = pref.getString("userEmail");
     userPW = pref.getString("userPW");
-    logger.e('user ' + userEmail.toString());
     if(userEmail == null || userEmail == '')
       navigatorPage();
     else {
-      logger.e('user 11111111111 ' + userEmail.toString());
       _login();
     }
   }
