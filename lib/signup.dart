@@ -1,10 +1,13 @@
 import 'package:community_stock/common/decoration.dart';
-import 'package:community_stock/firebase.dart';
+import 'package:community_stock/common/time.dart';
+import 'package:community_stock/firebase/firebase.dart';
 import 'package:community_stock/common/validate.dart';
 import 'package:community_stock/common/widget_style.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'firebase/usermanage.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key key}) : super(key: key);
@@ -80,7 +83,9 @@ class _SignUpState extends State<SignUp> {
       await FireBaseProvider().signUpWithEmail(
           _emailController.text, _pwController.text).then((value) {
         if (value) {
-            Navigator.pop(context);
+          String regdate = TimeMagage().getTimeNow();
+          UserManage().addUser('ekfkekf', '닉네임', '11111', regdate);
+          Navigator.pop(context);
           } else {
             _showAlertDialog(context);
           }

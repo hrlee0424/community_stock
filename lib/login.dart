@@ -1,6 +1,6 @@
 import 'package:community_stock/common/UserInfo.dart';
 import 'package:community_stock/common/decoration.dart';
-import 'package:community_stock/firebase.dart';
+import 'package:community_stock/firebase/firebase.dart';
 import 'package:community_stock/common/validate.dart';
 import 'package:community_stock/common/widget_style.dart';
 import 'package:community_stock/signup.dart';

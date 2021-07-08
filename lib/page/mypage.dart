@@ -1,5 +1,5 @@
 import 'package:community_stock/common/UserInfo.dart';
-import 'package:community_stock/firebase.dart';
+import 'package:community_stock/firebase/firebase.dart';
 import 'package:community_stock/login.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

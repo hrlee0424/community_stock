@@ -6,7 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'firebase.dart';
+import 'firebase/firebase.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key key}) : super(key: key);
@@ -68,8 +68,6 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void navigatorPage() {
-    logger.e('user 22222222 ' + userEmail.toString());
-
     Route route = MaterialPageRoute(builder: (context) => UserInfo.userEmail == null ? Login(): Home());
     Navigator.pushReplacement(context, route);
   }
