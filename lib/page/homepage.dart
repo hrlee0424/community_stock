@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
       body: Center(
         child: StreamBuilder(
           stream: FirebaseFirestore.instance
-          .collection('BoardForm')
+          .collection('boardform')
           .snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot){
             if(snapshot.data == null) return CircularProgressIndicator();
@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage> {
               snapshot.data.docs.map((board){
                 return Center(
                   child: ListTile(
-                    title: Text(board['Title']),
+                    title: Text(board['title']),
                     onTap: (){},
                   ),
                 );

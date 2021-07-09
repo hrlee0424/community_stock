@@ -21,16 +21,20 @@ class _SignUpState extends State<SignUp> {
   FocusNode _emailFocus = new FocusNode();
   TextEditingController _pwController = new TextEditingController();
   FocusNode _pwFocus = new FocusNode();
+  TextEditingController _nameController = new TextEditingController();
+  FocusNode _nameFocus = new FocusNode();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
     // TODO: implement dispose
+    super.dispose();
     _emailController.dispose();
     _pwController.dispose();
     _emailFocus.dispose();
     _pwFocus.dispose();
-    super.dispose();
+    _nameController.dispose();
+    _nameFocus.dispose();
   }
 
   @override
@@ -44,7 +48,7 @@ class _SignUpState extends State<SignUp> {
             child: Padding(
               padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 5.0),
               child: Column(
-                children: [_inputEmail(), _inputPW(), WidgetCustom().showBtn(50.0, Text('가입하기'), _signUp, Colors.amberAccent)],
+                children: [_inputEmail(), _inputPW(), _inputName(), WidgetCustom().showBtn(50.0, Text('가입하기'), _signUp, Colors.amberAccent)],
               ),
             )));
   }
@@ -76,6 +80,21 @@ class _SignUpState extends State<SignUp> {
         ));
   }
 
+  Widget _inputName() {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 10),
+      child: TextFormField(
+        controller: _nameController,
+        focusNode: _nameFocus,
+        validator: (value) {
+          if(value.isEmpty) return '닉네임을 입력하세요.';
+          return null;
+        },
+        decoration: FormDecoration().textFormDecoration('닉네임', '닉네임을 입력해주세요'),
+      ),
+    );
+  }
+
   void _signUp() async {
     if (formKey.currentState.validate()) {
       FocusScopeNode currentFocus = FocusScope.of(context); currentFocus.unfocus();
@@ -84,7 +103,7 @@ class _SignUpState extends State<SignUp> {
           _emailController.text, _pwController.text).then((value) {
         if (value) {
           String regdate = TimeMagage().getTimeNow();
-          UserManage().addUser('ekfkekf', '닉네임', '11111', regdate);
+          UserManage().addUser(_emailController.text, _nameController.text, '11111', regdate);
           Navigator.pop(context);
           } else {
             _showAlertDialog(context);

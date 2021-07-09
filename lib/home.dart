@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'page/mypage.dart';
+import 'writeboard.dart';
 
 class Home extends StatefulWidget {
   const Home({Key key}) : super(key: key);
@@ -21,7 +22,13 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
        appBar: AppBar(
-         title: Text('Commu'),
+         title: Text('StockCommu'),
+         actions: [
+           new IconButton(icon: new Icon(Icons.mode_edit),
+               onPressed: (){
+                 Navigator.push(context, MaterialPageRoute(builder : (context) => WriteBoard()));
+           })
+         ],
        ),
        body: _pages[_selectedIndex],
          bottomNavigationBar : BottomNavigationBar(
