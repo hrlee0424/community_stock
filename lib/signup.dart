@@ -1,5 +1,4 @@
 import 'package:community_stock/common/decoration.dart';
-import 'package:community_stock/common/time.dart';
 import 'package:community_stock/firebase/firebase.dart';
 import 'package:community_stock/common/validate.dart';
 import 'package:community_stock/common/widget_style.dart';
@@ -102,8 +101,9 @@ class _SignUpState extends State<SignUp> {
       await FireBaseProvider().signUpWithEmail(
           _emailController.text, _pwController.text).then((value) {
         if (value) {
-          String regdate = TimeMagage().getTimeNow();
-          UserManage().addUser(_emailController.text, _nameController.text, '11111', regdate);
+          // String regdate = TimeMagage().getTimeNow();
+          // UserManage().addUser(_emailController.text, _nameController.text, '11111', regdate);
+          UserManage().signUp(_emailController.text, _nameController.text);
           Navigator.pop(context);
           } else {
             _showAlertDialog(context);

@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:community_stock/detailview.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,22 +23,36 @@ class _HomePageState extends State<HomePage> {
         child: StreamBuilder(
           stream: FirebaseFirestore.instance
           .collection('boardform')
+          .orderBy('regdate', descending: true)
           .snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot){
             if(snapshot.data == null) return CircularProgressIndicator();
             if(snapshot.data.size <= 0){
-              return Center(child: Text('게시글이 없습니다.'),);
+              return Center(child: Text('게시글이 없습니다.'));
             }
-            return ListView(
-              children:
+            return ListView.builder(
+              itemCount: snapshot.data.size,
+              itemBuilder: (_, index){
+                DocumentSnapshot ds = snapshot.data.docs[index];
+                Map<String, dynamic> data = ds.data();
+               return ListTile(
+                  title: Text(data['title']),
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => DetailView(ds)));
+                  },
+                );
+              },
+              /*children:
               snapshot.data.docs.map((board){
                 return Center(
                   child: ListTile(
                     title: Text(board['title']),
-                    onTap: (){},
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => DetailView(snapshot.data[index])));
+                    },
                   ),
                 );
-              }).toList(),
+              }).toList(),*/
             );
           },
         ),

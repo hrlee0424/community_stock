@@ -16,7 +16,7 @@ class _TalkPageState extends State<TalkPage> {
         child: MaterialButton(
           child: Text('누르시오'),
           onPressed: (){
-            // UserManage().addUser('ekfkekf', '닉네임');
+            UserManage().signUp('efjskef@naver.com', '닉네임');
           },
         )
     );

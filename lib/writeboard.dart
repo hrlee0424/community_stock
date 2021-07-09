@@ -1,4 +1,3 @@
-import 'package:community_stock/common/time.dart';
 import 'package:community_stock/firebase/boardmanage.dart';
 import 'package:flutter/material.dart';
 
@@ -74,7 +73,7 @@ class _WriteBoardState extends State<WriteBoard> {
   }
 
   void _end(){
-    BoardManage().addBoard(UserInfo.userName, '11111', _titleController.text, _contentController.text, TimeMagage().getTimeNow());
+    BoardManage().addBoard(UserInfo.userName, _titleController.text, _contentController.text);
     Navigator.pop(context);
   }
 
