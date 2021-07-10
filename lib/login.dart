@@ -3,6 +3,7 @@ import 'package:community_stock/common/decoration.dart';
 import 'package:community_stock/firebase/firebase.dart';
 import 'package:community_stock/common/validate.dart';
 import 'package:community_stock/common/widget_style.dart';
+import 'package:community_stock/firebase/usermanage.dart';
 import 'package:community_stock/signup.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
@@ -97,10 +98,15 @@ class _LoginState extends State<Login> {
   void _login() async{
     if (formKey.currentState.validate()) {
       await Firebase.initializeApp();
-      await FireBaseProvider().signInWithEmail(_emailController.text, _pwController.text).then((value) {
+      await FireBaseProvider().signInWithEmail(_emailController.text, _pwController.text).then((value) async {
         if(!value) _showAlertDialog(context);
         else {
           setRememberInfo();
+          await UserManage().getUserInfo().then((value) {
+            UserInfo.userEmail = value['email'];
+            UserInfo.userName = value['nicname'];
+            print('222222222222 ' + value['nicname']);
+          });
           Route route = MaterialPageRoute(builder: (context) => Home());
           Navigator.pushReplacement(context, route);
         }
@@ -118,9 +124,12 @@ class _LoginState extends State<Login> {
     String pw = _pwController.text;
     pref.setString("userEmail", email);
     pref.setString("userPW", pw);
-    UserInfo.userEmail = email;
-    // UserInfo().userPw = pw;
+    /*UserManage().getUserNicName().then((value) {
+        UserInfo.userEmail = email;
+        UserInfo.userName = value;
+    });*/
   }
+
 
   void _showAlertDialog(BuildContext context) async {
     await showDialog(

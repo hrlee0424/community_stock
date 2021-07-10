@@ -87,7 +87,7 @@ class _SignUpState extends State<SignUp> {
         focusNode: _nameFocus,
         validator: (value) {
           if(value.isEmpty) return '닉네임을 입력하세요.';
-          return null;
+          else return null;
         },
         decoration: FormDecoration().textFormDecoration('닉네임', '닉네임을 입력해주세요'),
       ),

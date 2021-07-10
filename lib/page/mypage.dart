@@ -28,7 +28,8 @@ class _MyPageState extends State<MyPage> {
   Widget _getUserInfo(){
     return Column(
       children: [
-        Text(UserInfo.userEmail.toString())
+        Text(UserInfo.userEmail.toString()),
+        Text(UserInfo.userName.toString())
       ],
     );
   }

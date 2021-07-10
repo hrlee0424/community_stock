@@ -22,6 +22,7 @@ class _DetailViewState extends State<DetailView> {
         children: [
           Text(widget.post['title']),
           Text(widget.post['contents']),
+          Text(widget.post['nicname']),
           Text(widget.post['regdate'].toString()),
         ],
       ),

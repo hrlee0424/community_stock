@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase/firebase.dart';
+import 'firebase/usermanage.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key key}) : super(key: key);
@@ -54,12 +55,26 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void _login() async{
       await Firebase.initializeApp();
-      await FireBaseProvider().signInWithEmail(userEmail, userPW).then((value) {
+      await FireBaseProvider().signInWithEmail(userEmail, userPW).then((value) async {
         if(value) {
-          UserInfo.userEmail = userEmail;
-          navigatorPage();
+          await UserManage().getUserInfo().then((value) {
+            UserInfo.userEmail = userEmail;
+            UserInfo.userName = value['nicname'];
+            print('222222222222 ' + value['nicname']);
+            navigatorPage();
+          });
         }
       });
+  }
+
+  void setUser() async{
+    await UserManage().getUserNicName().then((value) {
+      if(value != null){
+        UserInfo.userEmail = userEmail;
+        UserInfo.userName = value.toString();
+        print('3333333333 '+ value.toString());
+      }
+    });
   }
 
   startTime() async{
