@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:community_stock/common/time.dart';
 import 'package:community_stock/detailview.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:intl/intl.dart';
 import '../common/widget_style.dart';
 import '../signup.dart';
 
@@ -32,17 +33,33 @@ class _HomePageState extends State<HomePage> {
             if(snapshot.data.size <= 0){
               return Center(child: Text('게시글이 없습니다.'));
             }
-            return ListView.builder(
+            return ListView.separated(
               itemCount: snapshot.data.size,
               itemBuilder: (_, index){
                 DocumentSnapshot ds = snapshot.data.docs[index];
                 Map<String, dynamic> data = ds.data();
                return ListTile(
-                  title: Text(data['title']),
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                      child: Text(data['title'],),),
+                      Row(
+                        children: [
+                          Text(data['nicname'], style: TextStyle(fontSize: 12)),
+                          Text('|', style: TextStyle(fontSize: 12)),
+                          Text(TimeDate().timeFormat(data['regdate']), style: TextStyle(fontSize: 12),)
+                        ],
+                      ),
+                    ],
+                  ),
                   onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context) => DetailView(ds)));
                   },
                 );
+              },
+              separatorBuilder: (context, index){
+                return Divider(thickness: 1,);
               },
               /*children:
               snapshot.data.docs.map((board){
@@ -61,5 +78,6 @@ class _HomePageState extends State<HomePage> {
       )
     );
   }
+
 
 }
