@@ -39,7 +39,8 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Widget logo() {
-    return Image.asset('assets/images/logo.png');
+    return Padding(padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+            child: Image.asset('assets/images/logo.png'));
   }
 
   void getUserInfo() async {

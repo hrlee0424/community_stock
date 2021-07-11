@@ -6,7 +6,7 @@ class FormDecoration{
     return new InputDecoration(
       contentPadding: EdgeInsets.fromLTRB(0, 16, 0, 0),
       hintText: hintText,
-      helperText: helperText,
+      // helperText: helperText,
     );
   }
 

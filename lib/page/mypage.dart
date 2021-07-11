@@ -5,6 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../common/widget_style.dart';
+
 class MyPage extends StatefulWidget {
   const MyPage({Key key}) : super(key: key);
 
@@ -16,6 +18,7 @@ class _MyPageState extends State<MyPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: WidgetCustom().showAppbar(context, '마이페이지'),
       body: Column(
         children: [
           _getUserInfo(),

@@ -17,4 +17,17 @@ class BoardManage{
         .then((value) => print("Board Added"))
         .catchError((error) => print("Failed to add board: $error"));
   }
+
+  Future<void> updateBoard(docId, title, contents){
+    return board.doc(docId)
+         .update({'title': title, 'contents' : contents})
+         .then((value) => print("Board Update"))
+         .catchError((error) => print("Failed to update board: $error"));
+  }
+
+  Future<void> deleteBoard(docId){
+    return board.doc(docId)
+          .delete().then((value) => print("Board Delete"))
+          .catchError((error) => print("Failed to delete board: $error"));
+  }
 }

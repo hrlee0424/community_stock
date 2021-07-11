@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../common/widget_style.dart';
 import '../signup.dart';
 
 class HomePage extends StatefulWidget {
@@ -19,6 +20,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: WidgetCustom().showAppbar(context, '커뮤니티'),
       body: Center(
         child: StreamBuilder(
           stream: FirebaseFirestore.instance
