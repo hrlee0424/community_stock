@@ -22,7 +22,7 @@ class UserManage {
   Future<void> signUp(email, nicName) async {
     FirebaseFirestore.instance
         .collection('user')
-        .doc(firebaseUser.uid)
+        .doc(firebaseUser!.uid)
         .set({'nicname': nicName, 'email': email, 'regdate': Timestamp.now()})
         .then((_) => print("success!"))
         .catchError((error) => print("Failed to add user: $error"));
@@ -31,17 +31,17 @@ class UserManage {
   Future<Map<String, dynamic>> getUserInfo() {
    return FirebaseFirestore.instance
         .collection('user')
-        .doc(firebaseUser.uid)
+        .doc(firebaseUser!.uid)
         .get()
         .then((value) {
-          Map<String, dynamic> data = value.data();
+          Map<String, dynamic> data = value.data()!;
           print(data['nicname']);
           return data;
    });
   }
 
   Future<String> getUserNicName(){
-    getUserInfo().then((value) {
+    return getUserInfo().then((value) {
       print('11111111111 ' + value['nicname']);
       return value['nicname'];
     });

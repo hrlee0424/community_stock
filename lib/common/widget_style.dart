@@ -24,6 +24,7 @@ class WidgetCustom {
   Widget showAppbar(context, title){
     return AppBar(
       title: Text(title),
+      backgroundColor: Color(0xffe77b7b),
       actions: [
         new IconButton(icon: new Icon(Icons.add),
             onPressed: (){

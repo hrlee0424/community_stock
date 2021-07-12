@@ -10,14 +10,14 @@ import '../firebase/firebase.dart';
 import '../firebase/usermanage.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key key}) : super(key: key);
+  const SplashScreen({Key? key}) : super(key: key);
 
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  String userEmail, userPW;
+  String? userEmail, userPW;
 
   @override
   void initState() {
@@ -56,7 +56,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void _login() async{
       await Firebase.initializeApp();
-      await FireBaseProvider().signInWithEmail(userEmail, userPW).then((value) async {
+      await FireBaseProvider().signInWithEmail(userEmail!, userPW!).then((value) async {
         if(value) {
           await UserManage().getUserInfo().then((value) {
             UserInfo.userEmail = userEmail;

@@ -9,7 +9,7 @@ class BoardManage{
     return board
         .add({
       'nicname': nicName,
-      'uid' : firebaseUser.uid,
+      'uid' : firebaseUser!.uid,
       'title' : title,
       'contents' : contents,
       'regdate' : Timestamp.now()

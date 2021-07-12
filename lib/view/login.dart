@@ -13,7 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../home.dart';
 
 class Login extends StatefulWidget {
-  const Login({Key key}) : super(key: key);
+  const Login({Key? key}) : super(key: key);
 
   @override
   _LoginState createState() => _LoginState();
@@ -69,7 +69,7 @@ class _LoginState extends State<Login> {
       child: TextFormField(
         controller: _emailController,
         focusNode: _emailFocus,
-        validator: (value) => CheckValidate().validateEmail(_emailFocus, value),
+        validator: (value) => CheckValidate().validateEmail(_emailFocus, value!),
         decoration: FormDecoration().textFormDecoration('이메일', '이메일을 입력해주세요'),
         keyboardType: TextInputType.emailAddress,
       ),
@@ -83,7 +83,7 @@ class _LoginState extends State<Login> {
           controller: _pwController,
           focusNode: _pwFocus,
           validator: (value) =>
-              CheckValidate().validatePassword(_pwFocus, value),
+              CheckValidate().validatePassword(_pwFocus, value!),
           decoration: FormDecoration().textFormDecoration(
               '비밀번호', '특수문자, 대소문자, 숫자 포함 8자 이상 15자 이내로 입력하세요.'),
           keyboardType: TextInputType.emailAddress,
@@ -96,7 +96,7 @@ class _LoginState extends State<Login> {
   }
 
   void _login() async{
-    if (formKey.currentState.validate()) {
+    if (formKey.currentState!.validate()) {
       await Firebase.initializeApp();
       await FireBaseProvider().signInWithEmail(_emailController.text, _pwController.text).then((value) async {
         if(!value) _showAlertDialog(context);

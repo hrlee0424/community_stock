@@ -6,20 +6,20 @@ Logger logger = Logger();
 
 class FireBaseProvider with ChangeNotifier{
   final FirebaseAuth fAuth = FirebaseAuth.instance;
-  User _user;
+  User? _user;
 
-  String _lastFirebaseResponse = "";
+  String? _lastFirebaseResponse = "";
 
   FireBaseProvider() {
     logger.d("init FirebaseProvider");
 
   }
 
-  User getUser() {
+  User? getUser() {
     return _user;
   }
 
-  void setUser(User value){
+  void setUser(User? value){
     _user = value;
     notifyListeners();
   }
@@ -36,7 +36,7 @@ class FireBaseProvider with ChangeNotifier{
     try {
       UserCredential result = await fAuth.createUserWithEmailAndPassword(email: email, password: password);
       if(result.user != null){
-        result.user.sendEmailVerification();
+        result.user!.sendEmailVerification();
         signOut();
         return true;
       }else{
@@ -90,12 +90,12 @@ class FireBaseProvider with ChangeNotifier{
 
   // 사용자에게 비밀번호 재설정 메일을 전송
   sendPasswordResetEmail() async {
-    fAuth.sendPasswordResetEmail(email: getUser().email);
+    fAuth.sendPasswordResetEmail(email: getUser()!.email!);
   }
 
   // Firebase로부터 회원 탈퇴
   withdrawalAccount() async {
-    await getUser().delete();
+    await getUser()!.delete();
     setUser(null);
   }
 
@@ -106,7 +106,7 @@ class FireBaseProvider with ChangeNotifier{
 
   // Firebase로부터 수신한 메시지를 반환하고 삭제
   getLastFBMessage() {
-    String returnValue = _lastFirebaseResponse;
+    String? returnValue = _lastFirebaseResponse;
     _lastFirebaseResponse = null;
     return returnValue;
   }

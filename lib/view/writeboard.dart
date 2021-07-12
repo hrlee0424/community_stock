@@ -13,7 +13,7 @@ import '../common/widget_style.dart';
 
 class WriteBoard extends StatefulWidget {
   // const WriteBoard({Key key}) : super(key: key);
-  final DocumentSnapshot post;
+  final DocumentSnapshot? post;
   WriteBoard({this.post});
 
   @override
@@ -30,15 +30,15 @@ class _WriteBoardState extends State<WriteBoard> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   final ImagePicker imagePicker = ImagePicker();
-  PickedFile _image;
-
+  PickedFile? _image;
+  List<PickedFile>? _imageFileList;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     if(widget.post != null){
-    _titleController.text = widget.post['title'];
-    _contentController.text = widget.post['contents'];
+    _titleController.text = widget.post!['title'];
+    _contentController.text = widget.post!['contents'];
     }
   }
 
@@ -66,11 +66,23 @@ class _WriteBoardState extends State<WriteBoard> {
               children: [
                 _inputTitle(),
                 _inputContent(),
-                TextButton(onPressed: getImageFromGallery, child: Text('사진 추가하기', style: TextStyle(fontSize: 20),)),
+                TextButton(onPressed: _selectDialog, child: Text('사진 추가하기 (최대 5장)', style: TextStyle(fontSize: 20),)),
                 Container(
                   width: MediaQuery.of(context).size.width,
                   height: 100,
-                  child: _image == null ? Text('이미지 없음') : Image.file(File(_image.path)),
+                  // child: _image == null ? Text('이미지 없음') : Image.file(File(_image!.path)),
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    key: UniqueKey(),
+                    itemBuilder: (context, index) {
+                      // Why network for web?
+                      // See https://pub.dev/packages/image_picker#getting-ready-for-the-web-platform
+                      return Semantics(
+                        child: _imageFileList == null ? Text('이미지 없음'): Image.file(File(_imageFileList![index].path)),
+                      );
+                    },
+                    itemCount: _imageFileList == null ? 0 : _imageFileList!.length,
+                  ),
                 ),
                 _addButton()
               ],
@@ -85,7 +97,7 @@ class _WriteBoardState extends State<WriteBoard> {
       focusNode: _titleFocus,
       decoration: FormDecoration().textFormDecoration('제목을 입력하세요.', '제목을 입력해주세요'),
         validator: (value) {
-          if(value.isEmpty) return '제목을 입력해주세요.';
+          if(value!.isEmpty) return '제목을 입력해주세요.';
           else return null;
         }
     );
@@ -99,7 +111,7 @@ class _WriteBoardState extends State<WriteBoard> {
             decoration: _decoration(),
             maxLines: 20,
             validator: (value) {
-              if(value.isEmpty) return '내용을 입력해주세요.';
+              if(value!.isEmpty) return '내용을 입력해주세요.';
               else return null;
             }
           ));
@@ -121,14 +133,14 @@ class _WriteBoardState extends State<WriteBoard> {
   }
 
   void setBoard(){
-    if (formKey.currentState.validate()) {
+    if (formKey.currentState!.validate()) {
       widget.post == null ? _addBoard() : _updateBoard();
     }
   }
 
   void _updateBoard(){
     print('수정수정수정');
-    BoardManage().updateBoard(widget.post.id, _titleController.text, _contentController.text);
+    BoardManage().updateBoard(widget.post!.id, _titleController.text, _contentController.text);
     Navigator.pop(context);
   }
 
@@ -138,10 +150,32 @@ class _WriteBoardState extends State<WriteBoard> {
     Navigator.pop(context);
   }
 
-  Future getImageFromGallery() async{
-    var image = await imagePicker.getImage(source: ImageSource.gallery);
+  Future getImageFromGallery(ImageSource source) async{
+    var image = await imagePicker.getMultiImage();
     setState(() {
-      _image = image;
+      // _image = image;
+      _imageFileList = image;
+      Navigator.pop(context);
+    });
+  }
+
+
+  _selectDialog(){
+    return showDialog(context: context, builder: (context){
+      return SimpleDialog(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+      title: Text('사진 가져오기'),
+      children: [
+        Padding(padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
+        child: SimpleDialogOption(
+          child: Text('카메라'),
+          onPressed: () {getImageFromGallery(ImageSource.camera);},
+        ),),
+        Padding(padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
+        child: SimpleDialogOption(
+          child: Text('갤러리'),
+          onPressed: () {getImageFromGallery(ImageSource.gallery);},
+        ),)
+      ],);
     });
   }
 }

@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../common/widget_style.dart';
 
 class MyPage extends StatefulWidget {
-  const MyPage({Key key}) : super(key: key);
+  const MyPage({Key? key}) : super(key: key);
 
   @override
   _MyPageState createState() => _MyPageState();
@@ -18,22 +18,32 @@ class _MyPageState extends State<MyPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: WidgetCustom().showAppbar(context, '마이페이지'),
+      appBar: WidgetCustom().showAppbar(context, 'MyPage') as PreferredSizeWidget?,
       body: Column(
-        children: [
-          _getUserInfo(),
-          _logout()
-        ],
-      ),
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: double.infinity,
+              child: Padding(padding: EdgeInsets.all(10.0), child: _getUserInfo(),),
+              color: Color(0x5c92885c),
+            ),
+            Spacer(),
+            _logout()
+          ],
+        ),
     );
   }
 
   Widget _getUserInfo(){
-    return Column(
-      children: [
-        Text(UserInfo.userEmail.toString()),
-        Text(UserInfo.userName.toString())
-      ],
+    return Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(UserInfo.userName.toString(), style: TextStyle(fontSize: 20)),
+          Padding(padding: EdgeInsets.only(top: 10.0),
+            child: Text(UserInfo.userEmail.toString(), style: TextStyle(fontSize: 15),),)
+        ],
+      ),
     );
   }
 

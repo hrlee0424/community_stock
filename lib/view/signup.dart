@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import '../firebase/usermanage.dart';
 
 class SignUp extends StatefulWidget {
-  const SignUp({Key key}) : super(key: key);
+  const SignUp({Key? key}) : super(key: key);
 
   @override
   _SignUpState createState() => _SignUpState();
@@ -58,7 +58,7 @@ class _SignUpState extends State<SignUp> {
       child: TextFormField(
         controller: _emailController,
         focusNode: _emailFocus,
-        validator: (value) => CheckValidate().validateEmail(_emailFocus, value),
+        validator: (value) => CheckValidate().validateEmail(_emailFocus, value!),
         decoration: FormDecoration().textFormDecoration('이메일', '이메일을 입력해주세요'),
         keyboardType: TextInputType.emailAddress,
       ),
@@ -72,7 +72,7 @@ class _SignUpState extends State<SignUp> {
           controller: _pwController,
           focusNode: _pwFocus,
           validator: (value) =>
-              CheckValidate().validatePassword(_pwFocus, value),
+              CheckValidate().validatePassword(_pwFocus, value!),
           decoration: FormDecoration().textFormDecoration(
               '비밀번호', '특수문자, 대소문자, 숫자 포함 8자 이상 15자 이내로 입력하세요.'),
           keyboardType: TextInputType.emailAddress,
@@ -86,7 +86,7 @@ class _SignUpState extends State<SignUp> {
         controller: _nameController,
         focusNode: _nameFocus,
         validator: (value) {
-          if(value.isEmpty) return '닉네임을 입력하세요.';
+          if(value!.isEmpty) return '닉네임을 입력하세요.';
           else return null;
         },
         decoration: FormDecoration().textFormDecoration('닉네임', '닉네임을 입력해주세요'),
@@ -95,7 +95,7 @@ class _SignUpState extends State<SignUp> {
   }
 
   void _signUp() async {
-    if (formKey.currentState.validate()) {
+    if (formKey.currentState!.validate()) {
       FocusScopeNode currentFocus = FocusScope.of(context); currentFocus.unfocus();
       await Firebase.initializeApp();
       await FireBaseProvider().signUpWithEmail(

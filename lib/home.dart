@@ -9,10 +9,10 @@ import 'page/mypage.dart';
 import 'view/writeboard.dart';
 
 class Home extends StatelessWidget {
-  Home({Key key}) : super(key: key);
+  Home({Key? key}) : super(key: key);
 
   int _selectedIndex = 0;
-  BottomNavigationProvider _bottomNavigationProvider;
+  late BottomNavigationProvider _bottomNavigationProvider;
 
   // List<Widget> _pages = [HomePage(), TalkPage(), MyPage()];
   List<Widget> _pages = [HomePage(), MyPage()];
@@ -58,7 +58,7 @@ class Home extends StatelessWidget {
             BottomNavigationBarItem(
                 icon: Icon(Icons.account_circle_rounded), label: 'My'),
           ],
-          // selectedItemColor: ,
+          selectedItemColor: Color(0xffff5c5c),
           currentIndex: _bottomNavigationProvider.currentPage,
         );
       // },
