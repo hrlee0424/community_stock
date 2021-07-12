@@ -57,6 +57,7 @@ class _WriteBoardState extends State<WriteBoard> {
     return Scaffold(
         appBar: AppBar(
           title: Text('글쓰기'),
+          backgroundColor: Color(0xffe77b7b),
         ),
         body: new Form(
           key: formKey,

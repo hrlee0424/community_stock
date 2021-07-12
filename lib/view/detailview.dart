@@ -26,6 +26,7 @@ class _DetailViewState extends State<DetailView> {
     return Scaffold(
         appBar: AppBar(
           title: Text('상세보기'),
+          backgroundColor: Color(0xffe77b7b),
           actions: [
             // if(widget.post['nicname'] == UserInfo.userName)
             Visibility(

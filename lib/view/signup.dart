@@ -41,6 +41,7 @@ class _SignUpState extends State<SignUp> {
     return Scaffold(
         appBar: AppBar(
           title: Text('회원가입'),
+          backgroundColor: Color(0xffe77b7b),
         ),
         body: new Form(
             key: formKey,

@@ -25,7 +25,6 @@ class _MyPageState extends State<MyPage> {
             Container(
               width: double.infinity,
               child: Padding(padding: EdgeInsets.all(10.0), child: _getUserInfo(),),
-              color: Color(0x5c92885c),
             ),
             Spacer(),
             _logout()
