@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:community_stock/common/time.dart';
-import 'package:community_stock/detailview.dart';
+import 'package:community_stock/view/detailview.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../common/widget_style.dart';
-import '../signup.dart';
+import '../view/signup.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: WidgetCustom().showAppbar(context, '커뮤니티'),
+      appBar: WidgetCustom().showAppbar(context, 'STALK'),
       body: Center(
         child: StreamBuilder(
           stream: FirebaseFirestore.instance

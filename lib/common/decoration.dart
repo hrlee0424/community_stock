@@ -4,8 +4,11 @@ class FormDecoration{
 
   InputDecoration textFormDecoration(hintText, helperText) {
     return new InputDecoration(
-      contentPadding: EdgeInsets.fromLTRB(0, 16, 0, 0),
+      contentPadding: EdgeInsets.fromLTRB(10, 15, 10, 15),
       hintText: hintText,
+      border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10)
+      ),
       // helperText: helperText,
     );
   }

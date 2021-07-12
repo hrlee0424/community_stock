@@ -1,8 +1,10 @@
-import 'package:community_stock/login.dart';
-import 'package:community_stock/splashscreen.dart';
+import 'package:community_stock/view/login.dart';
+import 'package:community_stock/view/splashscreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
+import 'provider/bottomnavigation_provider.dart';
+import 'home.dart';
 import 'home.dart';
 import 'page/homepage.dart';
 
@@ -16,14 +18,17 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return  MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (BuildContext context) => BottomNavigationProvider())
+      ],
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: new SplashScreen(),
       ),
-      home: new SplashScreen(),
-      routes: <String, WidgetBuilder>{
-      },
     );
   }
 }

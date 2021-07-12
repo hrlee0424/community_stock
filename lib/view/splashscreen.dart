@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'package:community_stock/common/UserInfo.dart';
 import 'package:community_stock/home.dart';
-import 'package:community_stock/login.dart';
+import 'package:community_stock/view/login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'firebase/firebase.dart';
-import 'firebase/usermanage.dart';
+import '../firebase/firebase.dart';
+import '../firebase/usermanage.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key key}) : super(key: key);
@@ -32,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Column(
         children: [
           logo(),
-          Text('주식이야기'),
+          Text('STALK'),
         ],
       )
     );
@@ -61,7 +61,6 @@ class _SplashScreenState extends State<SplashScreen> {
           await UserManage().getUserInfo().then((value) {
             UserInfo.userEmail = userEmail;
             UserInfo.userName = value['nicname'];
-            print('222222222222 ' + value['nicname']);
             navigatorPage();
           });
         }
@@ -73,7 +72,6 @@ class _SplashScreenState extends State<SplashScreen> {
       if(value != null){
         UserInfo.userEmail = userEmail;
         UserInfo.userName = value.toString();
-        print('3333333333 '+ value.toString());
       }
     });
   }

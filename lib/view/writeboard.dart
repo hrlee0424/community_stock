@@ -1,10 +1,15 @@
+
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:community_stock/firebase/boardmanage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
-import 'common/UserInfo.dart';
-import 'common/decoration.dart';
-import 'common/widget_style.dart';
+import '../common/UserInfo.dart';
+import '../common/decoration.dart';
+import '../common/widget_style.dart';
 
 class WriteBoard extends StatefulWidget {
   // const WriteBoard({Key key}) : super(key: key);
@@ -23,6 +28,9 @@ class _WriteBoardState extends State<WriteBoard> {
   FocusNode _contentFocus = new FocusNode();
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  final ImagePicker imagePicker = ImagePicker();
+  PickedFile _image;
 
   @override
   void initState() {
@@ -53,11 +61,17 @@ class _WriteBoardState extends State<WriteBoard> {
         body: new Form(
           key: formKey,
           child: Padding(
-            padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+            padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 20.0),
             child: ListView(
               children: [
                 _inputTitle(),
                 _inputContent(),
+                TextButton(onPressed: getImageFromGallery, child: Text('사진 추가하기', style: TextStyle(fontSize: 20),)),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 100,
+                  child: _image == null ? Text('이미지 없음') : Image.file(File(_image.path)),
+                ),
                 _addButton()
               ],
             ),
@@ -124,4 +138,10 @@ class _WriteBoardState extends State<WriteBoard> {
     Navigator.pop(context);
   }
 
+  Future getImageFromGallery() async{
+    var image = await imagePicker.getImage(source: ImageSource.gallery);
+    setState(() {
+      _image = image;
+    });
+  }
 }

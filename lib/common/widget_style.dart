@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../writeboard.dart';
+import '../view/writeboard.dart';
 
 class WidgetCustom {
   Widget showBtn(double paddingTop, Text text, getFunction, Color backColor) {

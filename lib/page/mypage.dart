@@ -1,6 +1,6 @@
 import 'package:community_stock/common/UserInfo.dart';
 import 'package:community_stock/firebase/firebase.dart';
-import 'package:community_stock/login.dart';
+import 'package:community_stock/view/login.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';

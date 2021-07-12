@@ -1,29 +1,27 @@
-import 'package:community_stock/common/UserInfo.dart';
 import 'package:community_stock/common/decoration.dart';
 import 'package:community_stock/firebase/firebase.dart';
 import 'package:community_stock/common/validate.dart';
 import 'package:community_stock/common/widget_style.dart';
-import 'package:community_stock/firebase/usermanage.dart';
-import 'package:community_stock/signup.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import 'home.dart';
+import '../firebase/usermanage.dart';
 
-class Login extends StatefulWidget {
-  const Login({Key key}) : super(key: key);
+class SignUp extends StatefulWidget {
+  const SignUp({Key key}) : super(key: key);
 
   @override
-  _LoginState createState() => _LoginState();
+  _SignUpState createState() => _SignUpState();
 }
 
-class _LoginState extends State<Login> {
+class _SignUpState extends State<SignUp> {
   TextEditingController _emailController = new TextEditingController();
   FocusNode _emailFocus = new FocusNode();
   TextEditingController _pwController = new TextEditingController();
   FocusNode _pwFocus = new FocusNode();
+  TextEditingController _nameController = new TextEditingController();
+  FocusNode _nameFocus = new FocusNode();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
@@ -34,33 +32,24 @@ class _LoginState extends State<Login> {
     _pwController.dispose();
     _emailFocus.dispose();
     _pwFocus.dispose();
+    _nameController.dispose();
+    _nameFocus.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: new Form(
-        key: formKey,
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 20.0),
-          child: ListView(
-            children: [
-              logo(),
-              _inputEmail(),
-              _inputPW(),
-              WidgetCustom().showBtn(50.0, Text('로그인하기'), _login, Colors.amberAccent),
-              Padding(padding: EdgeInsets.only(top: 30), child: Text('ID/PW를 잃어버렸다면?'),),
-              _findIdPw(),
-              Padding(padding: EdgeInsets.only(top: 30), child: Text('아직 회원이 아니라면?'),),
-              WidgetCustom().showBtn(30.0, Text('회원가입', style: TextStyle(color: Colors.white),), _signUp, Colors.blue)
-            ],
-          ),
-        ),)
-    );
-  }
-
-  Widget logo() {
-    return Image.asset('assets/images/logo.png');
+        appBar: AppBar(
+          title: Text('회원가입'),
+        ),
+        body: new Form(
+            key: formKey,
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 5.0),
+              child: Column(
+                children: [_inputEmail(), _inputPW(), _inputName(), WidgetCustom().showBtn(50.0, Text('가입하기'), _signUp, Colors.amberAccent)],
+              ),
+            )));
   }
 
   Widget _inputEmail() {
@@ -90,46 +79,38 @@ class _LoginState extends State<Login> {
         ));
   }
 
-  Widget _findIdPw(){
-    return TextButton(onPressed: (){},
-        child: Text('아이디, 비밀번호 찾기', style: TextStyle(fontWeight: FontWeight.bold),));
+  Widget _inputName() {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 10),
+      child: TextFormField(
+        controller: _nameController,
+        focusNode: _nameFocus,
+        validator: (value) {
+          if(value.isEmpty) return '닉네임을 입력하세요.';
+          else return null;
+        },
+        decoration: FormDecoration().textFormDecoration('닉네임', '닉네임을 입력해주세요'),
+      ),
+    );
   }
 
-  void _login() async{
+  void _signUp() async {
     if (formKey.currentState.validate()) {
+      FocusScopeNode currentFocus = FocusScope.of(context); currentFocus.unfocus();
       await Firebase.initializeApp();
-      await FireBaseProvider().signInWithEmail(_emailController.text, _pwController.text).then((value) async {
-        if(!value) _showAlertDialog(context);
-        else {
-          setRememberInfo();
-          await UserManage().getUserInfo().then((value) {
-            UserInfo.userEmail = value['email'];
-            UserInfo.userName = value['nicname'];
-            print('222222222222 ' + value['nicname']);
-          });
-          Route route = MaterialPageRoute(builder: (context) => Home());
-          Navigator.pushReplacement(context, route);
-        }
+      await FireBaseProvider().signUpWithEmail(
+          _emailController.text, _pwController.text).then((value) {
+        if (value) {
+          // String regdate = TimeMagage().getTimeNow();
+          // UserManage().addUser(_emailController.text, _nameController.text, '11111', regdate);
+          UserManage().signUp(_emailController.text, _nameController.text);
+          Navigator.pop(context);
+          } else {
+            _showAlertDialog(context);
+          }
       });
     }
   }
-
-  void _signUp() {
-    Navigator.push(context, MaterialPageRoute(builder : (context) => SignUp()));
-  }
-
-  void setRememberInfo() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    String email = _emailController.text;
-    String pw = _pwController.text;
-    pref.setString("userEmail", email);
-    pref.setString("userPW", pw);
-    /*UserManage().getUserNicName().then((value) {
-        UserInfo.userEmail = email;
-        UserInfo.userName = value;
-    });*/
-  }
-
 
   void _showAlertDialog(BuildContext context) async {
     await showDialog(
@@ -151,5 +132,4 @@ class _LoginState extends State<Login> {
       },
     );
   }
-
 }

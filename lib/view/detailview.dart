@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:community_stock/firebase/boardmanage.dart';
-import 'package:community_stock/writeboard.dart';
+import 'package:community_stock/view/writeboard.dart';
 import 'package:flutter/material.dart';
 
-import 'common/UserInfo.dart';
-import 'home.dart';
+import '../common/UserInfo.dart';
+import '../home.dart';
 
 class DetailView extends StatefulWidget {
   // const DetailView({Key key}) : super(key: key);
@@ -47,15 +47,20 @@ class _DetailViewState extends State<DetailView> {
                     widget.post['nicname'] == UserInfo.userName ? true : false),
           ],
         ),
-        body: Column(
-          children: [
-            Text(widget.post['title']),
-            Text(widget.post['contents']),
-            Text(widget.post['nicname']),
-            Text(widget.post.id),
-          ],
+        body: Padding(
+          padding: EdgeInsets.all(10.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(widget.post['title'], style: TextStyle(fontSize: 25),),
+              Text(widget.post['nicname']),
+              Text(widget.post['contents']),
+              Text(widget.post.id),
+            ],
+          ),
         ));
   }
+
 
   void _showAlertDialog(BuildContext context) async {
     await showDialog(
