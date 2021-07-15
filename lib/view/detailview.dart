@@ -1,9 +1,13 @@
 import 'dart:async';
-
+import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:community_stock/common/color.dart';
 import 'package:community_stock/firebase/boardmanage.dart';
+import 'package:community_stock/model/boardInfo.dart';
 import 'package:community_stock/view/writeboard.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../common/UserInfo.dart';
 import '../home.dart';
@@ -11,29 +15,36 @@ import '../home.dart';
 class DetailView extends StatefulWidget {
   // const DetailView({Key key}) : super(key: key);
   final DocumentSnapshot post;
+  // final String postId;
 
   DetailView(this.post);
+  // DetailView(this.postId);
 
   @override
   _DetailViewState createState() => _DetailViewState();
 }
 
 class _DetailViewState extends State<DetailView> {
-  StreamController<String> streamController = StreamController<String>();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text('상세보기'),
-          backgroundColor: Color(0xffe77b7b),
+          backgroundColor: CommonColor().basicColor,
           actions: [
             // if(widget.post['nicname'] == UserInfo.userName)
             Visibility(
                 child: new IconButton(
                     icon: new Icon(Icons.mode_edit),
-                    onPressed: () {
-                      Navigator.push(
+                    onPressed: ()  {
+                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
@@ -48,18 +59,47 @@ class _DetailViewState extends State<DetailView> {
                     widget.post['nicname'] == UserInfo.userName ? true : false),
           ],
         ),
-        body: Padding(
-          padding: EdgeInsets.all(10.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(widget.post['title'], style: TextStyle(fontSize: 25),),
-              Text(widget.post['nicname']),
-              Text(widget.post['contents']),
-              Text(widget.post.id),
+        body: /*Padding(
+              padding: EdgeInsets.all(10.0),
+              child: ListView(
+                children: [
+                  *//*Text(widget.post['title'], style: TextStyle(fontSize: 25),),
+                  Text(widget.post['nicname']),
+                  // widget.post['image'] != '' ? Image.network(widget.post['image'], fit: BoxFit.contain,) : Container(),
+                  Text(widget.post['contents']),
+                  Text(widget.post.id),*//*
+                ],
+              ),
+        )*/
+        StreamBuilder(
+          stream: FirebaseFirestore.instance
+              .collection('boardform')
+              .doc(widget.post.id)
+              .snapshots(),
+          builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot){
+            var data = snapshot.data;
+            if(snapshot.data == null) return CircularProgressIndicator();
+            print(data!.data().toString());
+            List<dynamic> list = data['image'];
+            return ListView(
+                children: [
+                  Text(data['title']),
+                  Text(data['contents']),
+                  ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: list.isNotEmpty ? list.length : 0,
+                      itemBuilder: (_, int index){
+                        Map<String, dynamic> sp = list[index];
+                      return Image.network(sp['img'].toString());
+                      },
+                  ),
             ],
-          ),
-        ));
+            );
+          },
+        )
+    );
   }
 
 

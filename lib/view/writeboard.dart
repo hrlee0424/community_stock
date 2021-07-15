@@ -1,15 +1,18 @@
 
+import 'dart:collection';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:community_stock/common/color.dart';
 import 'package:community_stock/firebase/boardmanage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import '../common/UserInfo.dart';
 import '../common/decoration.dart';
 import '../common/widget_style.dart';
+import 'package:path/path.dart' as Path;
 
 class WriteBoard extends StatefulWidget {
   // const WriteBoard({Key key}) : super(key: key);
@@ -32,6 +35,14 @@ class _WriteBoardState extends State<WriteBoard> {
   final ImagePicker imagePicker = ImagePicker();
   PickedFile? _image;
   List<PickedFile>? _imageFileList;
+
+  late firebase_storage.Reference ref;
+  late CollectionReference imgRef;
+  List<File> _imageList = [];
+
+
+  bool uploading = false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -40,6 +51,7 @@ class _WriteBoardState extends State<WriteBoard> {
     _titleController.text = widget.post!['title'];
     _contentController.text = widget.post!['contents'];
     }
+    imgRef = FirebaseFirestore.instance.collection('images');
   }
 
   @override
@@ -54,54 +66,78 @@ class _WriteBoardState extends State<WriteBoard> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('글쓰기'),
-          backgroundColor: Color(0xffe77b7b),
-        ),
-        body: new Form(
-          key: formKey,
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 20.0),
-            child: ListView(
-              children: [
-                _inputTitle(),
-                _inputContent(),
-                TextButton(onPressed: _selectDialog, child: Text('사진 추가하기 (최대 5장)', style: TextStyle(fontSize: 20),)),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 100,
-                  // child: _image == null ? Text('이미지 없음') : Image.file(File(_image!.path)),
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    key: UniqueKey(),
-                    itemBuilder: (context, index) {
-                      // Why network for web?
-                      // See https://pub.dev/packages/image_picker#getting-ready-for-the-web-platform
-                      return Semantics(
-                        child: _imageFileList == null ? Text('이미지 없음'): Image.file(File(_imageFileList![index].path)),
-                      );
-                    },
-                    itemCount: _imageFileList == null ? 0 : _imageFileList!.length,
-                  ),
-                ),
-                _addButton()
-              ],
-            ),
-          ),)
-    );
+    return WillPopScope(
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text('글쓰기'),
+            leading: new IconButton(icon: new Icon(Icons.arrow_back, color: Colors.white,),
+              onPressed: (){_showAlertDialog(context);},),
+            backgroundColor: CommonColor().basicColor,
+          ),
+          body: new Form(
+              key: formKey,
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                child: Stack(
+                  children: [
+                    ListView(
+                      children: [
+                        _inputTitle(),
+                        _inputContent(),
+                        TextButton(onPressed: _selectDialog, child: Text('사진 추가하기 (최대 5장)', style: TextStyle(fontSize: 20),)),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 80,
+                          // child: _image == null ? Text('이미지 없음') : Image.file(File(_image!.path)),
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            key: UniqueKey(),
+                            itemBuilder: (context, index) {
+                              return Semantics(
+                                child: _imageList.isEmpty ? Text('이미지 없음'): Image.file(File(_imageList[index].path)),
+                              );
+                            },
+                            itemCount: _imageList.isEmpty ? 0 : _imageList.length,
+                          ),
+                        ),
+                        _addButton()
+                      ],
+                    ),
+                    uploading ? new Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            child: Text('UpLoading...'),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          CircularProgressIndicator(color: CommonColor().basicColor,)
+                        ],
+                      ),
+                    ) : Container(),
+                  ],
+                )
+              ),
+          ),
+        ), onWillPop: () {
+          _showAlertDialog(context);
+          return Future(() => false);
+    },);
   }
 
   Widget _inputTitle() {
-    return TextFormField(
-      controller: _titleController,
-      focusNode: _titleFocus,
-      decoration: FormDecoration().textFormDecoration('제목을 입력하세요.', '제목을 입력해주세요'),
+    return Padding(padding: EdgeInsets.only(top: 20),
+    child: TextFormField(
+        controller: _titleController,
+        focusNode: _titleFocus,
+        decoration: FormDecoration().textFormDecoration('제목', '제목을 입력하세요.', '제목을 입력해주세요'),
         validator: (value) {
           if(value!.isEmpty) return '제목을 입력해주세요.';
           else return null;
         }
-    );
+    ),);
   }
 
   Widget _inputContent() {
@@ -120,17 +156,24 @@ class _WriteBoardState extends State<WriteBoard> {
 
   InputDecoration _decoration(){
       return InputDecoration(
+        labelText: '내용',
+        labelStyle: TextStyle(color: CommonColor().basicColor),
         contentPadding: EdgeInsets.fromLTRB(10, 20, 10, 20),
         hintText: '내용을 입력하세요.',
+        // fillColor: Color(0xf2a2727),
+        // filled: true,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10)
         ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(width: 2, color: CommonColor().basicColor)
+        )
       );
   }
 
   Widget _addButton(){
-    return WidgetCustom().showBtn(50.0, Text('등록하기'),
-        setBoard, Colors.amberAccent);
+    return WidgetCustom().showBtn(40.0, Text('등록하기', style: TextStyle(color: Colors.white)),
+        setBoard, CommonColor().basicColor);
   }
 
   void setBoard(){
@@ -140,26 +183,53 @@ class _WriteBoardState extends State<WriteBoard> {
   }
 
   void _updateBoard(){
-    print('수정수정수정');
     BoardManage().updateBoard(widget.post!.id, _titleController.text, _contentController.text);
     Navigator.pop(context);
   }
 
   void _addBoard(){
-    print('추가추가추가');
-    BoardManage().addBoard(UserInfo.userName, _titleController.text, _contentController.text);
-    Navigator.pop(context);
+    setState(() {
+      uploading = true;
+    });
+    if(_imageList.isEmpty){
+      BoardManage().addBoard(UserInfo.userName, _titleController.text, _contentController.text, hashMap);
+      Navigator.pop(context);
+    }else{
+      uploadFile().whenComplete(() {
+        BoardManage().addBoard(UserInfo.userName, _titleController.text, _contentController.text, hashMap);
+        Navigator.of(context).pop();
+      });
+    }
   }
 
   Future getImageFromGallery(ImageSource source) async{
-    var image = await imagePicker.getMultiImage();
+   // var image = await imagePicker.getMultiImage(imageQuality: 100);
+    var image = await imagePicker.getImage(source: source);
     setState(() {
-      // _image = image;
-      _imageFileList = image;
+      _image = image;
       Navigator.pop(context);
+      _imageList.add(File(image!.path));
+      if (image.path == null) retrieveLostData();
     });
   }
 
+  List<Map<String, String>> hashMap = [];
+
+  Future uploadFile() async {
+    int i = 1;
+    for (var img in _imageList) {
+      ref = firebase_storage.FirebaseStorage.instance
+          .ref()
+          .child('images/${Path.basename(img.path)}');
+      await ref.putFile(img).whenComplete(() async {
+        await ref.getDownloadURL().then((value) {
+          imgRef.add({'url': value});
+          hashMap.add({'img' : value});
+          i++;
+        });
+      });
+    }
+  }
 
   _selectDialog(){
     return showDialog(context: context, builder: (context){
@@ -179,4 +249,43 @@ class _WriteBoardState extends State<WriteBoard> {
       ],);
     });
   }
+
+  Future<void> retrieveLostData() async {
+    final LostData response = await imagePicker.getLostData();
+    if (response.isEmpty) {
+      return;
+    }
+    if (response.file != null) {
+      setState(() {
+        _imageList.add(File(response.file!.path));
+      });
+    } else {
+      print(response.file);
+    }
+  }
+
+  void _showAlertDialog(BuildContext context) async {
+    showDialog(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('알림'),
+          content: Text("작성중인 글이 있습니다. 나가시겠습니까?"),
+          actions: <Widget>[
+            TextButton(onPressed: (){
+              Navigator.pop(context, "취소");
+            }, child: Text('취소')),
+            TextButton(
+              child: Text('나가기'),
+              onPressed: () {
+                Navigator.of(context).popUntil((route) => route.isFirst);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 }

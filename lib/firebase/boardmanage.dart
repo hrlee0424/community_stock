@@ -5,13 +5,14 @@ class BoardManage{
   var firebaseUser =  FirebaseAuth.instance.currentUser;
   CollectionReference board = FirebaseFirestore.instance.collection('boardform');
 
-  Future<void> addBoard(nicName, title, contents) {
+  Future<void> addBoard(nicName, title, contents, List<Map<String, String>> hashMap) {
     return board
         .add({
       'nicname': nicName,
       'uid' : firebaseUser!.uid,
       'title' : title,
       'contents' : contents,
+      'image' : hashMap,
       'regdate' : Timestamp.now()
     })
         .then((value) => print("Board Added"))
@@ -30,4 +31,6 @@ class BoardManage{
           .delete().then((value) => print("Board Delete"))
           .catchError((error) => print("Failed to delete board: $error"));
   }
+
+
 }

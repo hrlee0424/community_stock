@@ -1,3 +1,4 @@
+import 'package:community_stock/common/color.dart';
 import 'package:community_stock/common/decoration.dart';
 import 'package:community_stock/firebase/firebase.dart';
 import 'package:community_stock/common/validate.dart';
@@ -48,7 +49,7 @@ class _SignUpState extends State<SignUp> {
             child: Padding(
               padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 5.0),
               child: Column(
-                children: [_inputEmail(), _inputPW(), _inputName(), WidgetCustom().showBtn(50.0, Text('가입하기'), _signUp, Colors.amberAccent)],
+                children: [_inputEmail(), _inputPW(), _inputName(), WidgetCustom().showBtn(50.0, Text('가입하기', style: TextStyle(color: Colors.white),), _signUp, CommonColor().basicColor)],
               ),
             )));
   }
@@ -60,7 +61,7 @@ class _SignUpState extends State<SignUp> {
         controller: _emailController,
         focusNode: _emailFocus,
         validator: (value) => CheckValidate().validateEmail(_emailFocus, value!),
-        decoration: FormDecoration().textFormDecoration('이메일', '이메일을 입력해주세요'),
+        decoration: FormDecoration().textFormDecoration('이메일', '이메일', '이메일을 입력해주세요'),
         keyboardType: TextInputType.emailAddress,
       ),
     );
@@ -75,7 +76,7 @@ class _SignUpState extends State<SignUp> {
           validator: (value) =>
               CheckValidate().validatePassword(_pwFocus, value!),
           decoration: FormDecoration().textFormDecoration(
-              '비밀번호', '특수문자, 대소문자, 숫자 포함 8자 이상 15자 이내로 입력하세요.'),
+              '비밀번호', '비밀번호', '특수문자, 대소문자, 숫자 포함 8자 이상 15자 이내로 입력하세요.'),
           keyboardType: TextInputType.emailAddress,
         ));
   }
@@ -90,7 +91,7 @@ class _SignUpState extends State<SignUp> {
           if(value!.isEmpty) return '닉네임을 입력하세요.';
           else return null;
         },
-        decoration: FormDecoration().textFormDecoration('닉네임', '닉네임을 입력해주세요'),
+        decoration: FormDecoration().textFormDecoration('닉네임', '닉네임', '닉네임을 입력해주세요'),
       ),
     );
   }

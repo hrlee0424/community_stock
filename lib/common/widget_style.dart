@@ -1,3 +1,4 @@
+import 'package:community_stock/common/color.dart';
 import 'package:flutter/material.dart';
 
 import '../view/writeboard.dart';
@@ -24,7 +25,7 @@ class WidgetCustom {
   Widget showAppbar(context, title){
     return AppBar(
       title: Text(title),
-      backgroundColor: Color(0xffe77b7b),
+      backgroundColor: CommonColor().basicColor,
       actions: [
         new IconButton(icon: new Icon(Icons.add),
             onPressed: (){

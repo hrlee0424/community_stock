@@ -49,15 +49,38 @@ class _MyPageState extends State<MyPage> {
   Widget _logout() {
     return MaterialButton(
       child: Text('로그아웃'),
-      onPressed: () async {
-        FireBaseProvider().signOut();
-        SharedPreferences preferences = await SharedPreferences.getInstance();
-        await preferences.clear();
-        Route route = MaterialPageRoute(builder: (context) => Login());
-        Navigator.pushReplacement(context, route);
+      onPressed: () {
+        _showAlertDialog(context);
       },
     );
   }
 
+  void _showAlertDialog(BuildContext context) async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('알림'),
+          content: Text("정말 로그아웃하시겠습니까?"),
+          actions: <Widget>[
+            TextButton(onPressed: (){
+              Navigator.pop(context, "취소");
+            }, child: Text('취소')),
+            TextButton(
+              child: Text('로그아웃하기'),
+              onPressed: () async{
+                FireBaseProvider().signOut();
+                SharedPreferences preferences = await SharedPreferences.getInstance();
+                await preferences.clear();
+                Route route = MaterialPageRoute(builder: (context) => Login());
+                Navigator.pushReplacement(context, route);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
 }

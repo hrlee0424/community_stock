@@ -5,13 +5,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'common/color.dart';
 import 'page/mypage.dart';
 import 'view/writeboard.dart';
 
 class Home extends StatelessWidget {
   Home({Key? key}) : super(key: key);
 
-  int _selectedIndex = 0;
   late BottomNavigationProvider _bottomNavigationProvider;
 
   // List<Widget> _pages = [HomePage(), TalkPage(), MyPage()];
@@ -48,9 +48,7 @@ class Home extends StatelessWidget {
   }
 
   Widget _showBottomNavigation() {
-    /*return Consumer<BottomNavigationProvider>(
-      builder: (context, provider, widget) {
-        */return BottomNavigationBar(
+    return BottomNavigationBar(
           onTap: (index) => _bottomNavigationProvider.updateCurrentPage(index),
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
@@ -58,17 +56,11 @@ class Home extends StatelessWidget {
             BottomNavigationBarItem(
                 icon: Icon(Icons.account_circle_rounded), label: 'My'),
           ],
-          selectedItemColor: Color(0xffff5c5c),
+          selectedItemColor: CommonColor().basicColor,
           currentIndex: _bottomNavigationProvider.currentPage,
         );
       // },
     // );
   }
 
-  void _onItemTapped(int index) {
-    /*setState(() {
-      _selectedIndex = index;
-    });*/
-    _bottomNavigationProvider.updateCurrentPage(index);
-  }
 }
