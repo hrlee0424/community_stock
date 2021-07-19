@@ -40,6 +40,7 @@ class _WriteBoardState extends State<WriteBoard> {
   late CollectionReference imgRef;
   List<File> _imageList = [];
 
+  List<dynamic> readData = [];
 
   bool uploading = false;
 
@@ -69,7 +70,7 @@ class _WriteBoardState extends State<WriteBoard> {
     return WillPopScope(
         child: Scaffold(
           appBar: AppBar(
-            title: Text('글쓰기'),
+            title: Text('게시글 작성'),
             leading: new IconButton(icon: new Icon(Icons.arrow_back, color: Colors.white,),
               onPressed: (){_showAlertDialog(context);},),
             backgroundColor: CommonColor().basicColor,
@@ -84,9 +85,9 @@ class _WriteBoardState extends State<WriteBoard> {
                       children: [
                         _inputTitle(),
                         _inputContent(),
-                        TextButton(onPressed: _selectDialog, child: Text('사진 추가하기 (최대 5장)', style: TextStyle(fontSize: 20),)),
+                        TextButton(onPressed: _selectDialog, child: Text('사진 추가하기', style: TextStyle(fontSize: 20),)),
                         Container(
-                          width: MediaQuery.of(context).size.width,
+                          width: 100, //MediaQuery.of(context).size.width,
                           height: 80,
                           // child: _image == null ? Text('이미지 없음') : Image.file(File(_image!.path)),
                           child: ListView.builder(
@@ -100,6 +101,35 @@ class _WriteBoardState extends State<WriteBoard> {
                             itemCount: _imageList.isEmpty ? 0 : _imageList.length,
                           ),
                         ),
+                        /*StreamBuilder(
+                          stream:  FirebaseFirestore.instance
+                              .collection('boardform')
+                              .doc(widget.post!.id)
+                              .snapshots(), builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
+                          var data = snapshot.data;
+                          print(data!.data());
+                          List<dynamic> list = data['image'];
+                          print('1111111111 ' + list.toString());
+                          return ListView(
+                            children: [
+                              ListView.builder(
+                                scrollDirection: Axis.vertical,
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                // scrollDirection: Axis.vertical,
+                                // key: UniqueKey(),
+                                itemCount: list.isNotEmpty ? list.length : 0,
+                                itemBuilder: (_, int index){
+                                  Map<String, dynamic> sp = list[index];
+                                  return Container(
+                                    child: Image.network(sp['img'].toString()),
+                                  );
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                        ),*/
                         _addButton()
                       ],
                     ),
@@ -223,7 +253,7 @@ class _WriteBoardState extends State<WriteBoard> {
           .child('images/${Path.basename(img.path)}');
       await ref.putFile(img).whenComplete(() async {
         await ref.getDownloadURL().then((value) {
-          imgRef.add({'url': value});
+          // imgRef.add({'url': value});
           hashMap.add({'img' : value});
           i++;
         });

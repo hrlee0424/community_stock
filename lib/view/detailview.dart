@@ -40,7 +40,7 @@ class _DetailViewState extends State<DetailView> {
           backgroundColor: CommonColor().basicColor,
           actions: [
             // if(widget.post['nicname'] == UserInfo.userName)
-            Visibility(
+            /*Visibility(
                 child: new IconButton(
                     icon: new Icon(Icons.mode_edit),
                     onPressed: ()  {
@@ -51,7 +51,7 @@ class _DetailViewState extends State<DetailView> {
                                   WriteBoard(post: widget.post)));
                     }),
                 visible:
-                    widget.post['nicname'] == UserInfo.userName ? true : false),
+                    widget.post['nicname'] == UserInfo.userName ? true : false),*/
             Visibility(
                 child: new IconButton(
                     icon: new Icon(Icons.delete), onPressed: () {_showAlertDialog(context);}),
@@ -91,7 +91,7 @@ class _DetailViewState extends State<DetailView> {
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: list.isNotEmpty ? list.length : 0,
                       itemBuilder: (_, int index){
-                        Map<String, dynamic> sp = list[index];
+                      Map<String, dynamic> sp = list[index];
                       return Image.network(sp['img'].toString());
                       },
                   ),

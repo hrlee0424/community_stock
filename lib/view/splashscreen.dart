@@ -32,14 +32,14 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Column(
         children: [
           logo(),
-          Text('STALK'),
+          Text('STALK', style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),),
         ],
       )
     );
   }
 
   Widget logo() {
-    return Padding(padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+    return Padding(padding: EdgeInsets.fromLTRB(20, 40, 20, 20),
             child: Image.asset('assets/images/logo.png'));
   }
 

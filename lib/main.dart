@@ -1,3 +1,4 @@
+import 'package:community_stock/provider/board_provider.dart';
 import 'package:community_stock/view/login.dart';
 import 'package:community_stock/view/splashscreen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
     return  MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (BuildContext context) => BottomNavigationProvider()),
+        ChangeNotifierProvider(create: (_) => BoardProvider())
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

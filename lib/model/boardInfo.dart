@@ -1,14 +1,26 @@
 import 'package:flutter/cupertino.dart';
 
-class BoardInfoProvider extends ChangeNotifier{
-/*  late String _title, _contents;
+class BoardInfo{
+  late List<dynamic> images;
+  late String title;
+  late String contents;
+  late String nicname;
+  late String uid;
+  late String regdate;
+
+  BoardInfo(this.images, this.title, this.contents, this.nicname, this.uid, this.regdate);
+
+
+
+
+
+/*late String _title, _contents;
   String get title => _title;
   String get contents => _contents;
 
   late List<Map<String, String>> _images;
   List<Map<String, String>> get images => _images;
 
-  BoardInfoProvider(this._title, this._contents, this._images);
 
   void notify(title, contents, images){
     _title = title;
@@ -16,6 +28,8 @@ class BoardInfoProvider extends ChangeNotifier{
     _images = images;
     notifyListeners();
   }*/
+
+
 
 
 

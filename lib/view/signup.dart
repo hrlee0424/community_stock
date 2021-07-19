@@ -21,6 +21,8 @@ class _SignUpState extends State<SignUp> {
   FocusNode _emailFocus = new FocusNode();
   TextEditingController _pwController = new TextEditingController();
   FocusNode _pwFocus = new FocusNode();
+  TextEditingController _pwController2 = new TextEditingController();
+  FocusNode _pwFocus2 = new FocusNode();
   TextEditingController _nameController = new TextEditingController();
   FocusNode _nameFocus = new FocusNode();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -48,15 +50,15 @@ class _SignUpState extends State<SignUp> {
             key: formKey,
             child: Padding(
               padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 5.0),
-              child: Column(
-                children: [_inputEmail(), _inputPW(), _inputName(), WidgetCustom().showBtn(50.0, Text('가입하기', style: TextStyle(color: Colors.white),), _signUp, CommonColor().basicColor)],
+              child: ListView(
+                children: [_inputEmail(), _inputPW(), _inputPW2(), _inputName(), WidgetCustom().showBtn(50.0, Text('가입하기', style: TextStyle(color: Colors.white),), _signUp, CommonColor().basicColor)],
               ),
             )));
   }
 
   Widget _inputEmail() {
     return Padding(
-      padding: EdgeInsets.only(bottom: 10),
+      padding: EdgeInsets.only(bottom: 20),
       child: TextFormField(
         controller: _emailController,
         focusNode: _emailFocus,
@@ -69,15 +71,34 @@ class _SignUpState extends State<SignUp> {
 
   Widget _inputPW() {
     return Padding(
-        padding: EdgeInsets.only(bottom: 10),
+        padding: EdgeInsets.only(bottom: 20),
         child: TextFormField(
           controller: _pwController,
           focusNode: _pwFocus,
+          obscureText: true,
           validator: (value) =>
               CheckValidate().validatePassword(_pwFocus, value!),
           decoration: FormDecoration().textFormDecoration(
               '비밀번호', '비밀번호', '특수문자, 대소문자, 숫자 포함 8자 이상 15자 이내로 입력하세요.'),
-          keyboardType: TextInputType.emailAddress,
+          keyboardType: TextInputType.text,
+        ));
+  }
+
+  Widget _inputPW2() {
+    return Padding(
+        padding: EdgeInsets.only(bottom: 20),
+        child: TextFormField(
+          controller: _pwController2,
+          focusNode: _pwFocus2,
+          obscureText: true,
+          validator: (value) {
+            if(value != _pwController.text){
+              return '비밀번호가 일치하지 않습니다. 다시 입력해주세요.';
+            }
+          },
+          decoration: FormDecoration().textFormDecoration(
+              '비밀번호 확인', '비밀번호 확인', '특수문자, 대소문자, 숫자 포함 8자 이상 15자 이내로 입력하세요.'),
+          keyboardType: TextInputType.text,
         ));
   }
 

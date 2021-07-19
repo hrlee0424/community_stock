@@ -43,13 +43,13 @@ class _LoginState extends State<Login> {
       body: new Form(
         key: formKey,
         child: Padding(
-          padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 20.0),
+          padding: EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 20.0),
           child: ListView(
             children: [
               logo(),
               _inputEmail(),
               _inputPW(),
-              WidgetCustom().showBtn(50.0, Text('로그인하기'), _login, CommonColor().basicColor),
+              WidgetCustom().showBtn(50.0, Text('로그인하기', style: TextStyle(color: Colors.white)), _login, CommonColor().basicColor),
               Padding(padding: EdgeInsets.only(top: 30), child: Text('ID/PW를 잃어버렸다면?'),),
               _findIdPw(),
               Padding(padding: EdgeInsets.only(top: 30), child: Text('아직 회원이 아니라면?'),),
@@ -83,11 +83,12 @@ class _LoginState extends State<Login> {
         child: TextFormField(
           controller: _pwController,
           focusNode: _pwFocus,
+          obscureText: true,
           validator: (value) =>
               CheckValidate().validatePassword(_pwFocus, value!),
           decoration: FormDecoration().textFormDecoration('비밀번호',
               '비밀번호', '특수문자, 대소문자, 숫자 포함 8자 이상 15자 이내로 입력하세요.'),
-          keyboardType: TextInputType.emailAddress,
+          keyboardType: TextInputType.text,
         ));
   }
 
