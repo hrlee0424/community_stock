@@ -32,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Column(
         children: [
           logo(),
-          Text('STALK', style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),),
+          Text('UPTALK', style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),),
         ],
       )
     );
