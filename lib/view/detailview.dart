@@ -6,6 +6,7 @@ import 'package:community_stock/firebase/boardmanage.dart';
 import 'package:community_stock/model/boardInfo.dart';
 import 'package:community_stock/view/writeboard.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -83,8 +84,10 @@ class _DetailViewState extends State<DetailView> {
             List<dynamic> list = data['image'];
             return ListView(
                 children: [
-                  Text(data['title']),
-                  Text(data['contents']),
+                  Padding(padding: EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 15.0),
+                  child: Text(data['title'], style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),),),
+                  Padding(padding: EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 15.0),
+                    child: Text(data['contents']),),
                   ListView.builder(
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
@@ -95,6 +98,19 @@ class _DetailViewState extends State<DetailView> {
                       return Image.network(sp['img'].toString());
                       },
                   ),
+                  Padding(padding: EdgeInsets.only(top: 50, left: 10),
+                  child: Text('댓글', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400)),),
+                  Container(
+                    width: double.infinity,
+                    child: Divider(
+                      color: Colors.black87,
+                      thickness: 1.0,
+                    ),
+                  ),
+                  Padding(padding: EdgeInsets.only(top: 30),
+                  child: Center(
+                    child: Text('댓글이 없습니다.'),
+                  ),)
             ],
             );
           },
